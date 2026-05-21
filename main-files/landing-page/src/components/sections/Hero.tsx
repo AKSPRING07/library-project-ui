@@ -9,7 +9,7 @@ const dashboardLinks = [
   },
   {
     label: "Staff Dashboard",
-    href: "/pulse-ui/landing-page/staff-dashboard/",
+    href: "http://localhost:8080/dashboard/staff",
   },
   {
     label: "Librarian Dashboard",

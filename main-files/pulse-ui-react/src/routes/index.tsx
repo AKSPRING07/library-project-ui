@@ -21,6 +21,7 @@ import Error500 from "@/pages/error/Error500"
 import ComingSoon from "@/pages/error/ComingSoon"
 import LibraryLandingPage from "@/pages/library/LibraryLandingPage"
 import RoleDashboardPage from "@/pages/library/RoleDashboardPage"
+import StaffWorkspacePage from "@/pages/library/StaffWorkspacePage"
 import StudentWorkspacePage from "@/pages/library/StudentWorkspacePage"
 
 export const router = createBrowserRouter(
@@ -62,10 +63,14 @@ export const router = createBrowserRouter(
       errorElement: <ErrorPage />,
     },
     {
+      path: "dashboard/staff/*",
+      element: <StaffWorkspacePage />,
+      errorElement: <ErrorPage />,
+    },
+    {
       element: <AppLayout />,
       errorElement: <ErrorPage />,
       children: [
-        { path: "dashboard/staff/*", element: <RoleDashboardPage /> },
         { path: "dashboard/librarian/*", element: <RoleDashboardPage /> },
         { path: "dashboard/technician/*", element: <RoleDashboardPage /> },
         { path: "landing-page", element: <LibraryLandingPage /> },
