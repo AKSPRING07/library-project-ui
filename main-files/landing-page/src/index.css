@@ -108,6 +108,10 @@ body {
     color: var(--neon);
   }
 
+  .text-neon-foreground {
+    color: var(--neon-foreground);
+  }
+
   .bg-deep {
     background-color: var(--deep);
   }
