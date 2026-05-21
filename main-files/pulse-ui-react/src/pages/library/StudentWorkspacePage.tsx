@@ -1,26 +1,12 @@
-import { useState } from "react"
-import {
-  AlertCircle,
-  Bell,
-  BookOpen,
-  Bookmark,
-  Check,
-  CheckCircle2,
-  Clock,
-  Library,
-  Mail,
-  Search,
-  Shield,
-  Sparkles,
-  Star,
-  User,
-} from "lucide-react"
-import { AnimatePresence, motion } from "framer-motion"
-
-import { DashboardShell, StatCard } from "@/components/dashboard-shell"
+import { useState } from "react";
+import { 
+  BookOpen, Bookmark, Clock, Sparkles, Search, FileText, Bell, Send, CheckCircle2, AlertCircle, RefreshCw, Star, User, Mail, Shield, Check, Info, Library
+} from "lucide-react";
+import { DashboardShell, StatCard } from "@/components/dashboard-shell";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function StudentDashboard() {
-  const [activeTab, setActiveTab] = useState<string>("overview")
+  const [activeTab, setActiveTab] = useState<string>("overview");
 
   // --- USER PROFILE STATE ---
   const [profileName, setProfileName] = useState("Alex Carter");
@@ -90,6 +76,10 @@ export default function StudentDashboard() {
   ]);
 
   // --- HANDLERS ---
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   const handleRenew = (id: number) => {
     setBorrowedBooks(books => books.map(book => {
       if (book.id === id) {

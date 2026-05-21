@@ -121,6 +121,97 @@
   }
 }
 
+@layer base {
+  :root {
+    --neon: #d4b04f;
+    --neon-foreground: #16261f;
+    --deep: rgba(17, 31, 26, 0.78);
+    --gradient-hero:
+      radial-gradient(circle at top left, rgba(52, 126, 103, 0.45), transparent 35%),
+      radial-gradient(circle at bottom right, rgba(212, 176, 79, 0.18), transparent 30%),
+      linear-gradient(180deg, #13241f 0%, #1a2e28 100%);
+    --gradient-neon: linear-gradient(135deg, #e2c56d 0%, #b78d1b 100%);
+    --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    --shadow-glow: 0 0 30px -8px rgba(212, 176, 79, 0.55);
+    --shadow-elevated: 0 24px 50px -22px rgba(4, 11, 9, 0.68);
+  }
+
+  .light {
+    --neon: #b8870d;
+    --neon-foreground: #fff9ec;
+    --deep: rgba(238, 245, 232, 0.7);
+    --gradient-hero:
+      radial-gradient(circle at top left, rgba(130, 182, 154, 0.38), transparent 35%),
+      radial-gradient(circle at bottom right, rgba(212, 176, 79, 0.25), transparent 28%),
+      linear-gradient(180deg, #f9fbf4 0%, #edf3e9 100%);
+    --gradient-neon: linear-gradient(135deg, #d6b348 0%, #b58406 100%);
+    --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.56));
+    --shadow-glow: 0 14px 34px -18px rgba(184, 135, 13, 0.45);
+    --shadow-elevated: 0 24px 54px -26px rgba(39, 74, 61, 0.24);
+  }
+}
+
+@layer utilities {
+  .bg-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-neon-gradient {
+    background: var(--gradient-neon);
+  }
+
+  .glass {
+    background: var(--gradient-card);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-strong {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .text-neon {
+    color: var(--neon);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@keyframes float-up {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: float-up 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 176, 79, 0.38); }
+  50% { box-shadow: 0 0 36px 6px rgba(212, 176, 79, 0.18); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
 /* REMOVE default FullCalendar button styles */
 .fc .fc-button {
   background: none;

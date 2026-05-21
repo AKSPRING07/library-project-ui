@@ -21,6 +21,7 @@ import Error500 from "@/pages/error/Error500"
 import ComingSoon from "@/pages/error/ComingSoon"
 import LibraryLandingPage from "@/pages/library/LibraryLandingPage"
 import RoleDashboardPage from "@/pages/library/RoleDashboardPage"
+import StudentWorkspacePage from "@/pages/library/StudentWorkspacePage"
 
 export const router = createBrowserRouter(
   [
@@ -56,20 +57,21 @@ export const router = createBrowserRouter(
       ],
     },
     {
+      path: "dashboard/student/*",
+      element: <StudentWorkspacePage />,
+      errorElement: <ErrorPage />,
+    },
+    {
       element: <AppLayout />,
       errorElement: <ErrorPage />,
       children: [
-        { path: "student/*", element: <RoleDashboardPage /> },
-        { path: "staff/*", element: <RoleDashboardPage /> },
-        { path: "librarian/*", element: <RoleDashboardPage /> },
-        { path: "technician/*", element: <RoleDashboardPage /> },
+        { path: "dashboard/staff/*", element: <RoleDashboardPage /> },
+        { path: "dashboard/librarian/*", element: <RoleDashboardPage /> },
+        { path: "dashboard/technician/*", element: <RoleDashboardPage /> },
         { path: "landing-page", element: <LibraryLandingPage /> },
         { path: "dashboard/landing-page", element: <LibraryLandingPage /> },
         { path: "*", element: <NotFound /> },
       ],
     },
   ],
-  {
-    basename: "/pulse-ui",
-  }
 )

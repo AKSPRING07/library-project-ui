@@ -55,7 +55,7 @@ export default function LibraryLandingPage() {
               Dark and light mode
             </Badge>
             <Button asChild className="rounded-full">
-              <Link to="/student">Open Student Dashboard</Link>
+              <Link to="/dashboard/student">Open Student Dashboard</Link>
             </Button>
           </div>
         </div>
@@ -79,19 +79,19 @@ export default function LibraryLandingPage() {
               </div>
               <div className="flex flex-wrap gap-3">
                 <Button asChild size="lg" className="rounded-full">
-                  <Link to="/student">
+                  <Link to="/dashboard/student">
                     Explore Student Dashboard
                     <ArrowRight className="ml-2 size-4" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="rounded-full">
-                  <Link to="/staff">Open Staff Dashboard</Link>
+                  <Link to="/dashboard/staff">Open Staff Dashboard</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="rounded-full">
-                  <Link to="/librarian">Open Librarian Dashboard</Link>
+                  <Link to="/dashboard/librarian">Open Librarian Dashboard</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="rounded-full">
-                  <Link to="/technician">Open Technician Dashboard</Link>
+                  <Link to="/dashboard/technician">Open Technician Dashboard</Link>
                 </Button>
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
