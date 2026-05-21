@@ -15,6 +15,7 @@ import {
 import { motion } from "framer-motion"
 
 import { DashboardShell, StatCard } from "@/components/dashboard-shell"
+import { BookCard } from "@/components/ui/book-card"
 
 type SearchItem = {
   title: string
@@ -23,6 +24,7 @@ type SearchItem = {
   publisher: string
   match: number
   category: "books" | "papers" | "grants"
+  cover?: string
 }
 
 type ReservationItem = {
@@ -57,11 +59,11 @@ export default function StaffDashboard() {
   ])
 
   const mockDb: SearchItem[] = [
-    { title: "Scaling Laws for Sparse Mixtures", author: "W. Fedus", type: "Research Paper", publisher: "arXiv ML", match: 99, category: "papers" },
-    { title: "Quantum Computing Principles", author: "Nielsen & Chuang", type: "Teaching Resource Book", publisher: "Cambridge", match: 96, category: "books" },
-    { title: "Deep Learning Foundations", author: "I. Goodfellow", type: "Teaching Resource Book", publisher: "MIT Press", match: 94, category: "books" },
-    { title: "NSF Academic Research Grant Index 2026", author: "NSF Board", type: "Grant Proposal Guide", publisher: "US Gov Science", match: 91, category: "grants" },
-    { title: "Quantum Teleportation Paradigms", author: "Charles H. Bennett", type: "Research Paper", publisher: "APS Physics", match: 89, category: "papers" },
+    { title: "Scaling Laws for Sparse Mixtures", author: "W. Fedus", type: "Research Paper", publisher: "arXiv ML", match: 99, category: "papers", cover: "from-blue-600 to-indigo-600" },
+    { title: "Quantum Computing Principles", author: "Nielsen & Chuang", type: "Teaching Resource Book", publisher: "Cambridge", match: 96, category: "books", cover: "from-amber-600 to-yellow-600" },
+    { title: "Deep Learning Foundations", author: "I. Goodfellow", type: "Teaching Resource Book", publisher: "MIT Press", match: 94, category: "books", cover: "from-rose-600 to-pink-600" },
+    { title: "NSF Academic Research Grant Index 2026", author: "NSF Board", type: "Grant Proposal Guide", publisher: "US Gov Science", match: 91, category: "grants", cover: "from-emerald-600 to-teal-600" },
+    { title: "Quantum Teleportation Paradigms", author: "Charles H. Bennett", type: "Research Paper", publisher: "APS Physics", match: 89, category: "papers", cover: "from-violet-600 to-purple-600" },
   ]
 
   const handleSearch = (e: React.FormEvent) => {
@@ -165,23 +167,18 @@ export default function StaffDashboard() {
                 {searchResults.length === 0 ? (
                   <div className="py-6 text-center text-xs text-muted-foreground">No scientific records found.</div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="grid gap-4 grid-cols-2 sm:grid-cols-3">
                     {searchResults.map((item, index) => (
-                      <div key={`${item.title}-${index}`} className="flex items-center justify-between rounded-xl bg-white/5 p-3 transition hover:bg-white/10">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-foreground">{item.title}</span>
-                            <span className="rounded bg-white/5 px-1.5 py-0.5 text-[9px] text-muted-foreground">{item.type}</span>
-                          </div>
-                          <div className="mt-0.5 text-xs text-muted-foreground">{item.author} · {item.publisher}</div>
-                        </div>
-                        <button
-                          onClick={() => handleReserve(item)}
-                          className="rounded-lg bg-neon-gradient px-3 py-1.5 text-xs font-bold text-neon-foreground transition hover:shadow-glow"
-                        >
-                          Priority Request
-                        </button>
-                      </div>
+                      <BookCard
+                        key={`${item.title}-${index}`}
+                        title={item.title}
+                        author={item.author}
+                        match={item.match}
+                        category={item.category}
+                        coverColor={item.cover}
+                        onBorrow={() => handleReserve(item)}
+                        onDetails={() => alert(`Details for ${item.title}`)}
+                      />
                     ))}
                   </div>
                 )}
@@ -195,28 +192,21 @@ export default function StaffDashboard() {
             </h2>
             <p className="mt-0.5 text-xs font-medium text-muted-foreground">Domain match tailored to your research field and citation patterns</p>
 
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 grid gap-4 grid-cols-2 sm:grid-cols-3">
               {[
-                { title: "Scaling Laws for Sparse Mixtures", author: "W. Fedus", match: 99, reason: "Highly relevant to your registered department research in Neural Nets" },
-                { title: "Geometric Deep Learning Revisited", author: "Michael Bronstein", match: 94, reason: "Cited by 12 papers in your custom citation network tracker" },
-                { title: "Quantum Teleportation Paradigms", author: "Charles Bennett", match: 91, reason: "Matches core curriculum for Physics 402 this semester" },
+                { title: "Scaling Laws for Sparse Mixtures", author: "W. Fedus", match: 99, cover: "from-blue-600 to-indigo-600" },
+                { title: "Geometric Deep Learning Revisited", author: "Michael Bronstein", match: 94, cover: "from-amber-600 to-yellow-600" },
+                { title: "Quantum Teleportation Paradigms", author: "Charles Bennett", match: 91, cover: "from-violet-600 to-purple-600" },
               ].map((rec) => (
-                <div key={rec.title} className="flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-4 transition hover:border-neon/30">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-foreground">{rec.title}</span>
-                      <span className="text-[10px] font-bold text-neon">{rec.match}% Match</span>
-                    </div>
-                    <div className="mt-0.5 text-xs text-muted-foreground">by {rec.author}</div>
-                    <div className="mt-1 rounded bg-white/5 px-2 py-1 text-[10px] italic text-muted-foreground">Lumi Reason: {rec.reason}</div>
-                  </div>
-                  <button
-                    onClick={() => handleReserve(rec)}
-                    className="rounded-lg border border-white/10 px-3 py-1.5 text-xs text-foreground transition hover:border-neon hover:text-neon"
-                  >
-                    Borrow
-                  </button>
-                </div>
+                <BookCard
+                  key={rec.title}
+                  title={rec.title}
+                  author={rec.author}
+                  match={rec.match}
+                  coverColor={rec.cover}
+                  onBorrow={() => handleReserve(rec)}
+                  onDetails={() => alert(`Details for ${rec.title}`)}
+                />
               ))}
             </div>
           </div>

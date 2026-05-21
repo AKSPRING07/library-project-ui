@@ -18,6 +18,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion"
 
 import { DashboardShell, StatCard } from "@/components/dashboard-shell"
+import { BookCard } from "@/components/ui/book-card"
 
 export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState<string>("overview")
@@ -35,20 +36,20 @@ export default function StudentDashboard() {
   const [catalogCategory, setCatalogCategory] = useState<string>("All");
 
   const catalogBooks = [
-    { title: "Probabilistic Machine Learning", author: "Kevin P. Murphy", category: "Computer Science", publisher: "MIT Press", available: true, isbn: "978-0262046824" },
-    { title: "Designing Machine Learning Systems", author: "Chip Huyen", category: "Computer Science", publisher: "O'Reilly", available: true, isbn: "978-1098107963" },
-    { title: "Introduction to Algorithms", author: "Cormen, Leiserson, Rivest", category: "Mathematics", publisher: "MIT Press", available: false, isbn: "978-0262033848" },
-    { title: "The Pragmatic Programmer", author: "David Thomas", category: "Software Engineering", publisher: "Addison-Wesley", available: true, isbn: "978-0135957059" },
-    { title: "Clean Architecture", author: "Robert C. Martin", category: "Software Engineering", publisher: "Prentice Hall", available: false, isbn: "978-0134494166" },
-    { title: "Quantum Error Correction Survey", author: "Emanuel Knill", category: "Mathematics", publisher: "Nature Quantum", available: true, isbn: "978-0470091357" },
-    { title: "Scaling Laws for Sparse Mixtures", author: "William Fedus", category: "Computer Science", publisher: "arXiv ML", available: true, isbn: "978-0596520687" },
-    { title: "Discrete Mathematics & Applications", author: "Kenneth Rosen", category: "Mathematics", publisher: "McGraw Hill", available: true, isbn: "978-0073383095" },
+    { title: "Probabilistic Machine Learning", author: "Kevin P. Murphy", category: "Computer Science", publisher: "MIT Press", available: true, isbn: "978-0262046824", cover: "from-blue-600 to-indigo-600" },
+    { title: "Designing Machine Learning Systems", author: "Chip Huyen", category: "Computer Science", publisher: "O'Reilly", available: true, isbn: "978-1098107963", cover: "from-amber-600 to-orange-600" },
+    { title: "Introduction to Algorithms", author: "Cormen, Leiserson, Rivest", category: "Mathematics", publisher: "MIT Press", available: false, isbn: "978-0262033848", cover: "from-emerald-600 to-teal-600" },
+    { title: "The Pragmatic Programmer", author: "David Thomas", category: "Software Engineering", publisher: "Addison-Wesley", available: true, isbn: "978-0135957059", cover: "from-violet-600 to-purple-600" },
+    { title: "Clean Architecture", author: "Robert C. Martin", category: "Software Engineering", publisher: "Prentice Hall", available: false, isbn: "978-0134494166", cover: "from-rose-600 to-pink-600" },
+    { title: "Quantum Error Correction Survey", author: "Emanuel Knill", category: "Mathematics", publisher: "Nature Quantum", available: true, isbn: "978-0470091357", cover: "from-blue-500 to-cyan-500" },
+    { title: "Scaling Laws for Sparse Mixtures", author: "William Fedus", category: "Computer Science", publisher: "arXiv ML", available: true, isbn: "978-0596520687", cover: "from-indigo-500 to-blue-500" },
+    { title: "Discrete Mathematics & Applications", author: "Kenneth Rosen", category: "Mathematics", publisher: "McGraw Hill", available: true, isbn: "978-0073383095", cover: "from-teal-500 to-emerald-500" },
   ];
 
   const recommendedCatalog = [
-    { title: "Artificial Intelligence: A Modern Approach", author: "Russell & Norvig", match: 98, desc: "Essential CS standard curriculum matching your major." },
-    { title: "Patterns of Enterprise Application Architecture", author: "Martin Fowler", match: 92, desc: "Recommended for Software Engineering module track." },
-    { title: "Deep Learning Foundations", author: "Ian Goodfellow", match: 95, desc: "Matching ML topics in your previous reading history." }
+    { title: "Artificial Intelligence: A Modern Approach", author: "Russell & Norvig", match: 98, desc: "Essential CS standard curriculum matching your major.", cover: "from-amber-600 to-yellow-600" },
+    { title: "Patterns of Enterprise Application Architecture", author: "Martin Fowler", match: 92, desc: "Recommended for Software Engineering module track.", cover: "from-indigo-600 to-purple-600" },
+    { title: "Deep Learning Foundations", author: "Ian Goodfellow", match: 95, desc: "Matching ML topics in your previous reading history.", cover: "from-rose-600 to-pink-600" }
   ];
 
   // --- READERS SECTION STATE ---
@@ -300,26 +301,22 @@ export default function StudentDashboard() {
                   Your original workspace values remain intact: 12 borrowed books overall and 18.6h of reading progress still inform these suggestions.
                 </p>
 
-                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                <div className="mt-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
                   {[
                     { title: "Probabilistic ML", author: "Murphy", match: 98, color: "from-amber-600 to-yellow-600" },
                     { title: "Designing ML Systems", author: "Huyen", match: 95, color: "from-indigo-600 to-purple-600" },
                     { title: "Deep Learning Book", author: "Goodfellow", match: 94, color: "from-rose-600 to-pink-600" },
+                    { title: "The Pragmatic Programmer", author: "David Thomas", match: 91, color: "from-emerald-600 to-teal-600" },
                   ].map((book) => (
-                    <div key={book.title} className="group relative overflow-hidden rounded-xl border border-white/5 bg-white/5 p-3 transition hover:border-neon/30">
-                      <div className={`mb-3 h-28 rounded-lg bg-gradient-to-br ${book.color} opacity-80 transition duration-300 group-hover:scale-102`} />
-                      <div className="truncate text-xs font-semibold text-foreground">{book.title}</div>
-                      <div className="truncate text-[10px] text-muted-foreground">{book.author}</div>
-                      <div className="mt-1.5 flex items-center justify-between text-[11px]">
-                        <span className="font-medium text-neon">{book.match}% match</span>
-                        <button
-                          onClick={() => handleCatalogRequest(book.title, book.author, true)}
-                          className="text-[10px] text-muted-foreground hover:text-foreground hover:underline"
-                        >
-                          Quick Borrow
-                        </button>
-                      </div>
-                    </div>
+                    <BookCard
+                      key={book.title}
+                      title={book.title}
+                      author={book.author}
+                      match={book.match}
+                      coverColor={book.color}
+                      onBorrow={() => handleCatalogRequest(book.title, book.author, true)}
+                      onDetails={() => alert(`Showing details for ${book.title}`)}
+                    />
                   ))}
                 </div>
               </div>
@@ -394,31 +391,19 @@ export default function StudentDashboard() {
             {/* Books listing */}
             <div className="rounded-2xl glass p-5 shadow-sm">
               <h3 className="text-sm font-semibold text-foreground mb-3">Available Catalog Books</h3>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                 {filteredCatalogBooks.map((book) => (
-                  <div key={book.isbn} className="rounded-xl border border-white/5 bg-white/5 p-4 flex flex-col justify-between hover:border-neon/20 transition">
-                    <div>
-                      <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-                        <span className="font-mono">{book.isbn}</span>
-                        <span className="font-medium bg-white/5 px-1.5 py-0.5 rounded">{book.category}</span>
-                      </div>
-                      <h4 className="text-sm font-bold text-foreground mt-2 line-clamp-1">{book.title}</h4>
-                      <p className="text-xs text-muted-foreground mt-0.5">by {book.author}</p>
-                      <div className="text-[11px] text-muted-foreground mt-1">Publisher: {book.publisher}</div>
-                    </div>
-                    
-                    <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-3">
-                      <span className={`text-xs font-semibold ${book.available ? "text-emerald-400" : "text-amber-400"}`}>
-                        {book.available ? "Available" : "Checked Out"}
-                      </span>
-                      <button 
-                        onClick={() => handleCatalogRequest(book.title, book.author, book.available)}
-                        className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${book.available ? "bg-neon-gradient text-neon-foreground hover:shadow-glow" : "bg-white/5 border border-white/10 hover:border-neon text-neon"}`}
-                      >
-                        {book.available ? "Borrow" : "Reserve"}
-                      </button>
-                    </div>
-                  </div>
+                  <BookCard
+                    key={book.isbn}
+                    title={book.title}
+                    author={book.author}
+                    isbn={book.isbn}
+                    category={book.category}
+                    available={book.available}
+                    coverColor={book.cover}
+                    onBorrow={() => handleCatalogRequest(book.title, book.author, book.available)}
+                    onDetails={() => alert(`Showing details for ${book.title}`)}
+                  />
                 ))}
               </div>
             </div>
@@ -430,25 +415,17 @@ export default function StudentDashboard() {
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">Lumi AI recommendation models tailored directly to your curriculum</p>
 
-              <div className="mt-4 grid gap-4 sm:grid-cols-3">
+              <div className="mt-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                 {recommendedCatalog.map((rec) => (
-                  <div key={rec.title} className="rounded-xl border border-white/5 bg-white/5 p-4 flex flex-col justify-between hover:border-neon/30 transition">
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-neon">{rec.match}% AI Match</span>
-                        <Star className="h-3.5 w-3.5 text-neon fill-neon" />
-                      </div>
-                      <h4 className="text-sm font-semibold text-foreground mt-2">{rec.title}</h4>
-                      <p className="text-xs text-muted-foreground mt-0.5">by {rec.author}</p>
-                      <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed bg-white/5 p-2 rounded">{rec.desc}</p>
-                    </div>
-                    <button 
-                      onClick={() => handleCatalogRequest(rec.title, rec.author, true)}
-                      className="mt-4 w-full rounded-lg bg-white/5 border border-white/10 hover:border-neon hover:text-neon py-2 text-xs font-semibold transition"
-                    >
-                      Request Borrow
-                    </button>
-                  </div>
+                  <BookCard
+                    key={rec.title}
+                    title={rec.title}
+                    author={rec.author}
+                    match={rec.match}
+                    coverColor={rec.cover}
+                    onBorrow={() => handleCatalogRequest(rec.title, rec.author, true)}
+                    onDetails={() => alert(`Showing details for ${rec.title}`)}
+                  />
                 ))}
               </div>
             </div>
@@ -510,27 +487,17 @@ export default function StudentDashboard() {
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">AI targeted predictions matching your ratings and search queries</p>
 
-              <div className="mt-4 grid gap-4 sm:grid-cols-3">
+              <div className="mt-4 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                 {historyRecommendations.map((rec) => (
-                  <div key={rec.title} className="rounded-xl border border-white/5 bg-white/5 p-4 flex flex-col justify-between hover:border-neon/30 transition">
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-neon bg-neon/10 px-2 py-0.5 rounded">{rec.match}% Match</span>
-                        <Star className="h-3.5 w-3.5 text-neon fill-neon" />
-                      </div>
-                      <h4 className="text-sm font-semibold text-foreground mt-2.5">{rec.title}</h4>
-                      <p className="text-xs text-muted-foreground mt-0.5">by {rec.author}</p>
-                      <div className="text-xs text-muted-foreground/80 mt-3 leading-relaxed border-t border-white/5 pt-2">
-                        <span className="font-semibold text-foreground">Lumi Match: </span>{rec.reason}
-                      </div>
-                    </div>
-                    <button 
-                      onClick={() => handleCatalogRequest(rec.title, rec.author, true)}
-                      className="mt-4 w-full rounded-lg bg-neon-gradient py-2 text-xs font-bold text-neon-foreground hover:shadow-glow transition"
-                    >
-                      Instant Request
-                    </button>
-                  </div>
+                  <BookCard
+                    key={rec.title}
+                    title={rec.title}
+                    author={rec.author}
+                    match={rec.match}
+                    coverColor="from-gray-700 to-gray-900"
+                    onBorrow={() => handleCatalogRequest(rec.title, rec.author, true)}
+                    onDetails={() => alert(`Reason: ${rec.reason}`)}
+                  />
                 ))}
               </div>
             </div>

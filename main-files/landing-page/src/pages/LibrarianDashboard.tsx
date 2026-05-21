@@ -8,6 +8,8 @@ import {
   Clock,
   Database,
   FileText,
+  LayoutGrid,
+  List,
   Plus,
   Repeat,
   Search,
@@ -18,6 +20,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion"
 
 import { DashboardShell, StatCard } from "@/components/dashboard-shell"
+import { BookCard } from "@/components/ui/book-card"
 
 type BookItem = {
   isbn: string
@@ -26,6 +29,7 @@ type BookItem = {
   category: string
   quantity: number
   location: string
+  cover?: string
 }
 
 type CirculationLog = {
@@ -56,11 +60,12 @@ type FineItem = {
 
 export default function LibrarianDashboard() {
   const [activeTab, setActiveTab] = useState<"circulation" | "inventory" | "fines" | "analytics">("circulation")
+  const [viewMode, setViewMode] = useState<"table" | "grid">("grid")
   const [books, setBooks] = useState<BookItem[]>([
-    { isbn: "978-0134685991", title: "Effective Java", author: "Joshua Bloch", category: "Computer Science", quantity: 5, location: "Aisle A, Shelf 3" },
-    { isbn: "978-0132350884", title: "Clean Code", author: "Robert C. Martin", category: "Software Engineering", quantity: 3, location: "Aisle B, Shelf 2" },
-    { isbn: "978-0262033848", title: "Introduction to Algorithms", author: "Thomas H. Cormen", category: "Mathematics", quantity: 2, location: "Aisle A, Shelf 5" },
-    { isbn: "978-0596520687", title: "Designing Data-Intensive Applications", author: "Martin Kleppmann", category: "Systems Engineering", quantity: 4, location: "Aisle C, Shelf 1" },
+    { isbn: "978-0134685991", title: "Effective Java", author: "Joshua Bloch", category: "Computer Science", quantity: 5, location: "Aisle A, Shelf 3", cover: "from-amber-600 to-yellow-600" },
+    { isbn: "978-0132350884", title: "Clean Code", author: "Robert C. Martin", category: "Software Engineering", quantity: 3, location: "Aisle B, Shelf 2", cover: "from-blue-600 to-indigo-600" },
+    { isbn: "978-0262033848", title: "Introduction to Algorithms", author: "Thomas H. Cormen", category: "Mathematics", quantity: 2, location: "Aisle A, Shelf 5", cover: "from-emerald-600 to-teal-600" },
+    { isbn: "978-0596520687", title: "Designing Data-Intensive Applications", author: "Martin Kleppmann", category: "Systems Engineering", quantity: 4, location: "Aisle C, Shelf 1", cover: "from-rose-600 to-pink-600" },
   ])
   const [newTitle, setNewTitle] = useState("")
   const [newAuthor, setNewAuthor] = useState("")
@@ -108,6 +113,7 @@ export default function LibrarianDashboard() {
       category: newCategory,
       quantity: newQuantity,
       location: newLocation,
+      cover: "from-blue-600 to-indigo-600", // Default cover color
     }
     setBooks([book, ...books])
     setNewTitle("")
@@ -373,55 +379,88 @@ export default function LibrarianDashboard() {
                       </h2>
                       <p className="mt-0.5 text-xs text-muted-foreground">Filter, search, edit, and audit standard library records</p>
                     </div>
-                    <div className="flex max-w-xs flex-1 items-center gap-2 rounded-xl border border-white/5 bg-white/5 px-3 py-2">
-                      <Search className="h-3.5 w-3.5 text-muted-foreground" />
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search ISBN, Title, Category..."
-                        className="w-full bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground/60"
-                      />
+                    <div className="flex flex-wrap items-center gap-4">
+                      <div className="flex items-center gap-1 rounded-xl bg-white/5 p-1 border border-white/5">
+                        <button 
+                          onClick={() => setViewMode("grid")}
+                          className={`p-2 rounded-lg transition ${viewMode === "grid" ? "bg-neon-gradient text-neon-foreground shadow-glow" : "text-muted-foreground hover:text-foreground"}`}
+                        >
+                          <LayoutGrid className="h-4 w-4" />
+                        </button>
+                        <button 
+                          onClick={() => setViewMode("table")}
+                          className={`p-2 rounded-lg transition ${viewMode === "table" ? "bg-neon-gradient text-neon-foreground shadow-glow" : "text-muted-foreground hover:text-foreground"}`}
+                        >
+                          <List className="h-4 w-4" />
+                        </button>
+                      </div>
+                      <div className="flex max-w-xs flex-1 items-center gap-2 rounded-xl border border-white/5 bg-white/5 px-3 py-2">
+                        <Search className="h-3.5 w-3.5 text-muted-foreground" />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          placeholder="Search ISBN, Title, Category..."
+                          className="w-full bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground/60"
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  <div className="mt-4 overflow-x-auto">
-                    <table className="w-full border-collapse text-left text-xs">
-                      <thead>
-                        <tr className="border-b border-white/10 font-semibold text-muted-foreground">
-                          <th className="py-2.5">ISBN</th>
-                          <th className="py-2.5">Title</th>
-                          <th className="py-2.5">Category</th>
-                          <th className="py-2.5">Quantity</th>
-                          <th className="py-2.5">Location</th>
-                          <th className="py-2.5 text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/5">
-                        {filteredBooks.map((b) => (
-                          <tr key={b.isbn} className="transition hover:bg-white/5">
-                            <td className="py-3 font-mono text-muted-foreground">{b.isbn}</td>
-                            <td className="py-3 font-medium">
-                              <div className="text-foreground">{b.title}</div>
-                              <div className="text-[10px] text-muted-foreground">by {b.author}</div>
-                            </td>
-                            <td className="py-3 text-muted-foreground">{b.category}</td>
-                            <td className="py-3 font-semibold text-foreground">{b.quantity}</td>
-                            <td className="py-3 text-muted-foreground">{b.location}</td>
-                            <td className="py-3 text-right">
-                              <button
-                                onClick={() => handleDeleteBook(b.isbn)}
-                                className="rounded-lg p-1.5 text-rose-400 transition hover:bg-rose-500/10 hover:text-rose-300"
-                                title="Remove book"
-                              >
-                                <Trash2 className="h-3.5 w-3.5" />
-                              </button>
-                            </td>
+                  {viewMode === "table" ? (
+                    <div className="mt-4 overflow-x-auto">
+                      <table className="w-full border-collapse text-left text-xs">
+                        <thead>
+                          <tr className="border-b border-white/10 font-semibold text-muted-foreground">
+                            <th className="py-2.5">ISBN</th>
+                            <th className="py-2.5">Title</th>
+                            <th className="py-2.5">Category</th>
+                            <th className="py-2.5">Quantity</th>
+                            <th className="py-2.5">Location</th>
+                            <th className="py-2.5 text-right">Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                          {filteredBooks.map((b) => (
+                            <tr key={b.isbn} className="transition hover:bg-white/5">
+                              <td className="py-3 font-mono text-muted-foreground">{b.isbn}</td>
+                              <td className="py-3 font-medium">
+                                <div className="text-foreground">{b.title}</div>
+                                <div className="text-[10px] text-muted-foreground">by {b.author}</div>
+                              </td>
+                              <td className="py-3 text-muted-foreground">{b.category}</td>
+                              <td className="py-3 font-semibold text-foreground">{b.quantity}</td>
+                              <td className="py-3 text-muted-foreground">{b.location}</td>
+                              <td className="py-3 text-right">
+                                <button
+                                  onClick={() => handleDeleteBook(b.isbn)}
+                                  className="rounded-lg p-1.5 text-rose-400 transition hover:bg-rose-500/10 hover:text-rose-300"
+                                  title="Remove book"
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="mt-6 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                      {filteredBooks.map((b) => (
+                        <BookCard
+                          key={b.isbn}
+                          title={b.title}
+                          author={b.author}
+                          isbn={b.isbn}
+                          category={b.category}
+                          coverColor={b.cover}
+                          onBorrow={() => alert(`Issuing ${b.title}`)}
+                          onDetails={() => alert(`Details for ${b.title}: ${b.location}`)}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="rounded-2xl glass p-5 shadow-sm">
