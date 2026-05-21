@@ -20,6 +20,7 @@ import Error404 from "@/pages/error/Error404"
 import Error500 from "@/pages/error/Error500"
 import ComingSoon from "@/pages/error/ComingSoon"
 import LibraryLandingPage from "@/pages/library/LibraryLandingPage"
+import LibrarianWorkspacePage from "@/pages/library/LibrarianWorkspacePage"
 import RoleDashboardPage from "@/pages/library/RoleDashboardPage"
 import StaffWorkspacePage from "@/pages/library/StaffWorkspacePage"
 import StudentWorkspacePage from "@/pages/library/StudentWorkspacePage"
@@ -68,10 +69,14 @@ export const router = createBrowserRouter(
       errorElement: <ErrorPage />,
     },
     {
+      path: "dashboard/librarian/*",
+      element: <LibrarianWorkspacePage />,
+      errorElement: <ErrorPage />,
+    },
+    {
       element: <AppLayout />,
       errorElement: <ErrorPage />,
       children: [
-        { path: "dashboard/librarian/*", element: <RoleDashboardPage /> },
         { path: "dashboard/technician/*", element: <RoleDashboardPage /> },
         { path: "landing-page", element: <LibraryLandingPage /> },
         { path: "dashboard/landing-page", element: <LibraryLandingPage /> },
