@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes"
 import { Toaster } from "sonner"
 
 import { router } from "@/routes"
+import { AuthProvider } from "@/context/AuthContext"
 import "@/index.css"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       enableSystem
       disableTransitionOnChange
     >
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </ThemeProvider>
     <Toaster position="top-right" richColors closeButton />
   </React.StrictMode>

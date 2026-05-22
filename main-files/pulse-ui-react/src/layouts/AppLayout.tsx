@@ -1,8 +1,9 @@
 import { Outlet, useLocation } from "react-router-dom"
 import { useEffect, useMemo, useState } from "react"
-import { Bot, Sparkles } from "lucide-react"
+import { Bot, LogOut, Sparkles } from "lucide-react"
 
 import { AppSidebar } from "@/components/app-sidebar"
+import { Button } from "@/components/ui/button"
 import { NotificationDropdown } from "@/components/notification-dropdown"
 import {
   Breadcrumb,
@@ -11,6 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { useAuth } from "@/context/AuthContext"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
@@ -53,6 +55,8 @@ export default function AppLayout() {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+  const auth = useAuth()
 
   return (
     <SidebarProvider open={open} onOpenChange={setOpen}>
@@ -98,6 +102,16 @@ export default function AppLayout() {
             <GlobalSearch />
             <ThemeToggle />
             <NotificationDropdown />
+            {auth.isAuthenticated && (
+              <Button
+                variant="ghost"
+                className="hidden items-center gap-2 rounded-full px-3 text-slate-300 hover:bg-slate-900/60 sm:inline-flex"
+                onClick={auth.logout}
+              >
+                <LogOut className="size-4" />
+                Sign out
+              </Button>
+            )}
             <div className="hidden rounded-full border bg-background/80 px-3 py-1.5 text-xs text-muted-foreground lg:flex lg:items-center lg:gap-2">
               <Bot className="size-3.5" />
               Floating AI online

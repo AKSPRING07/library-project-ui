@@ -24,6 +24,8 @@ import LibrarianWorkspacePage from "@/pages/library/LibrarianWorkspacePage"
 import RoleDashboardPage from "@/pages/library/RoleDashboardPage"
 import StaffWorkspacePage from "@/pages/library/StaffWorkspacePage"
 import StudentWorkspacePage from "@/pages/library/StudentWorkspacePage"
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute"
+import { PublicRoute } from "@/components/auth/PublicRoute"
 
 export const router = createBrowserRouter(
   [
@@ -41,12 +43,12 @@ export const router = createBrowserRouter(
       element: <AuthLayout />,
       errorElement: <ErrorPage />,
       children: [
-        { path: "auth/basic/login", element: <LoginPage /> },
-        { path: "auth/basic/register", element: <RegisterPage /> },
-        { path: "auth/basic/forgot-password", element: <ForgotPasswordPage /> },
-        { path: "auth/basic/reset-password", element: <ResetPasswordForm /> },
-        { path: "auth/basic/verify-email", element: <VerifyEmailForm /> },
-        { path: "auth/basic/password-reset-success", element: <PasswordResetSuccess /> },
+        { path: "auth/basic/login", element: <PublicRoute><LoginPage /></PublicRoute> },
+        { path: "auth/basic/register", element: <PublicRoute><RegisterPage /></PublicRoute> },
+        { path: "auth/basic/forgot-password", element: <PublicRoute><ForgotPasswordPage /></PublicRoute> },
+        { path: "auth/basic/reset-password", element: <PublicRoute><ResetPasswordForm /></PublicRoute> },
+        { path: "auth/basic/verify-email", element: <PublicRoute><VerifyEmailForm /></PublicRoute> },
+        { path: "auth/basic/password-reset-success", element: <PublicRoute><PasswordResetSuccess /></PublicRoute> },
         { path: "auth/cover/login", element: <CoverLoginPage /> },
         { path: "auth/cover/register", element: <CoverRegisterPage /> },
         { path: "auth/cover/forgot-password", element: <CoverForgotPasswordPage /> },
@@ -59,25 +61,25 @@ export const router = createBrowserRouter(
       ],
     },
     {
-      path: "dashboard/student/*",
-      element: <StudentWorkspacePage />,
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: "dashboard/staff/*",
-      element: <StaffWorkspacePage />,
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: "dashboard/librarian/*",
-      element: <LibrarianWorkspacePage />,
-      errorElement: <ErrorPage />,
-    },
-    {
       element: <AppLayout />,
       errorElement: <ErrorPage />,
       children: [
-        { path: "dashboard/technician/*", element: <RoleDashboardPage /> },
+        {
+          path: "dashboard/student/*",
+          element: <ProtectedRoute allowedRoles={["student"]}><StudentWorkspacePage /></ProtectedRoute>,
+        },
+        {
+          path: "dashboard/staff/*",
+          element: <ProtectedRoute allowedRoles={["staff"]}><StaffWorkspacePage /></ProtectedRoute>,
+        },
+        {
+          path: "dashboard/librarian/*",
+          element: <ProtectedRoute allowedRoles={["librarian"]}><LibrarianWorkspacePage /></ProtectedRoute>,
+        },
+        {
+          path: "dashboard/technician/*",
+          element: <ProtectedRoute allowedRoles={["technician"]}><RoleDashboardPage /></ProtectedRoute>,
+        },
         { path: "landing-page", element: <LibraryLandingPage /> },
         { path: "dashboard/landing-page", element: <LibraryLandingPage /> },
         { path: "*", element: <NotFound /> },
