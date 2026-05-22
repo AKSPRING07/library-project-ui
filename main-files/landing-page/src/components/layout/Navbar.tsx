@@ -78,9 +78,12 @@ export default function Navbar() {
         </nav>
 
         {/* CTA */}
-        <div className="hidden lg:block">
-          <Button className="px-6 py-2 animate-pulse">
-            Buy Now
+        <div className="hidden lg:flex items-center gap-3">
+          <Button asChild variant="outline" className="px-6 py-2">
+            <a href="http://localhost:8080/auth/basic/login">Login</a>
+          </Button>
+          <Button asChild className="px-6 py-2 animate-pulse">
+            <a href="http://localhost:8080/auth/basic/register">Register</a>
           </Button>
         </div>
 
@@ -108,8 +111,11 @@ export default function Navbar() {
               </a>
             ))}
 
-            <Button className="mt-4 w-full">
-              Buy Now
+            <Button asChild className="mt-4 w-full">
+              <a href="http://localhost:8080/auth/basic/login">Login</a>
+            </Button>
+            <Button asChild variant="outline" className="w-full">
+              <a href="http://localhost:8080/auth/basic/register">Register</a>
             </Button>
           </div>
         </div>

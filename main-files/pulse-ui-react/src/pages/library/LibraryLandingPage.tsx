@@ -54,8 +54,11 @@ export default function LibraryLandingPage() {
               <MoonStar className="mr-2 size-3.5" />
               Dark and light mode
             </Badge>
-            <Button asChild className="rounded-full">
-              <Link to="/dashboard/student">Open Student Dashboard</Link>
+            <Button asChild variant="ghost" className="rounded-full border border-slate-700/80 px-4 py-2 text-slate-100 hover:bg-slate-900/70">
+              <Link to="/auth/basic/login">Login</Link>
+            </Button>
+            <Button asChild className="rounded-full bg-cyan-500 px-4 py-2 text-slate-950 hover:bg-cyan-400">
+              <Link to="/auth/basic/register">Register</Link>
             </Button>
           </div>
         </div>
